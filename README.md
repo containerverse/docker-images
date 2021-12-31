@@ -1,2 +1,2 @@
 # docker-images
-Docker image collection and other configurations.
+Dockerfiles collection and other configurations.
