@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  app1-apache:
+    image: httpd
+    tty: true
+    container_name: app1-apache
+    volumes:
+      - ./www1/:/usr/local/apache2/htdocs/
+    ports:
+      - "8080:80"
+
+  app2-apache:
+    image: httpd   
+    tty: true
+    container_name: app2-apache
+    volumes:
+      - ./www2/:/usr/local/apache2/htdocs/
+
+  nginx-proxy:
+    image: nginx:1.19.6-alpine
+    tty: true
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./certs:/etc/nginx/certs"
+      - "./disk/etc/nginx/conf.d:/etc/nginx/conf.d"
+    depends_on:
+      - app1-apache
+      - app2-apache

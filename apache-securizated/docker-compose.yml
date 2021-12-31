@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  apache-secure:
+    image: apache-secure-i
+    container_name: apache-secure
+    tty: true
+    ports:
+      - "8080:80"
+      - "8443:443"
+    hostname: luis.com
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN

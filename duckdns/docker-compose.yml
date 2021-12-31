@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  duckdns:
+    image: linuxserver/duckdns
+    container_name: cs01duckdns01
+    environment:
+      - PUID=1000 #optional
+      - PGID=1000 #optional
+      - TZ=Europe/Madrid
+      - SUBDOMAINS=vps13byte
+      - TOKEN= # Token generated on the web www.duckdns.org (account is required)
+      - LOG_FILE=false #optional
+    volumes:
+      - ./disk/config:/config #optional
+    restart: unless-stopped

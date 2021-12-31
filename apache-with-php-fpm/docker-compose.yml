@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  webserver:
+    image: httpd:2.4.48
+    tty: true
+    container_name: apache-server
+    restart: unless-stopped
+    volumes:
+      - ./disk-apache/var/www/html/:/usr/local/apache2/htdocs/
+      - ./disk-apache/etc/httpd/conf.d:/etc/httpd/conf.d/ 
+      - ./disk-apache/etc/httpd/certs:/etc/httpd/certs/
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - phpserver
+
+  phpserver:
+    image: php:7.4.22-fpm
+    tty: true
+    container_name: php-fpm
+    restart: unless-stopped
+    volumes:
+      - ./disk-php-fpm/etc:/usr/local/etc/
+    ports:
+      - "9000:9000"
+
+  dbms:
+    image: mysql:8.0.26
+    container_name: mysql-server
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./disk-mysql/var/lib/mysql:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: databasename
+      MYSQL_ROOT_PASSWORD: A74F65AB3F30C14D515C9179B4EF04CCF01490E8
+      SERVICE_NAME: mysql
